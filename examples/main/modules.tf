@@ -1,31 +1,3 @@
-# PostgreSQL hardening module
-[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/hardening/postgresql/)
-
-Terraform module using `PostgreSQL` provider tp apply hardening on an existing database.
-This module will be used in combination with others PostgreSQL modules (like [`azure-db-postgresql-flexible`](https://registry.terraform.io/modules/claranet/db-postgresql-flexible/azurerm/) for example).
-
-This module revoke privileges on the default `public` PostgreSQL schema and creates a dedicated schema for the specified database.
-
-<!-- BEGIN_TF_DOCS -->
-## Global versioning rule for Claranet Azure modules
-
-| Module version | Terraform version | AzureRM version |
-| -------------- | ----------------- | --------------- |
-| >= 7.x.x       | 1.3.x             | >= 3.0          |
-| >= 6.x.x       | 1.x               | >= 3.0          |
-| >= 5.x.x       | 0.15.x            | >= 2.0          |
-| >= 4.x.x       | 0.13.x / 0.14.x   | >= 2.0          |
-| >= 3.x.x       | 0.12.x            | >= 2.0          |
-| >= 2.x.x       | 0.12.x            | < 2.0           |
-| <  2.x.x       | 0.11.x            | < 2.0           |
-
-## Usage
-
-This module is optimized to work with the [Claranet terraform-wrapper](https://github.com/claranet/terraform-wrapper) tool
-which set some terraform variables in the environment needed by this module.
-More details about variables set by the `terraform-wrapper` available in the [documentation](https://github.com/claranet/terraform-wrapper#environment).
-
-```hcl
 module "azure_region" {
   source  = "claranet/regions/azurerm"
   version = "x.x.x"
@@ -135,36 +107,3 @@ module "postgresql_hardening" {
   user     = each.key
   database = each.key
 }
-```
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| postgresql | >= 1.14 |
-
-## Modules
-
-No modules.
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [postgresql_grant.revoke_public](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/grant) | resource |
-| [postgresql_schema.db_schema](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/schema) | resource |
-
-## Inputs
-
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| database | Database to apply hardening to. | `string` | n/a | yes |
-| schema\_name | Schema custom name to create associated to the Database. Database name used if not set. | `string` | `null` | no |
-| user | Database schema owner user. | `string` | n/a | yes |
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| schema | Database schema name |
-<!-- END_TF_DOCS -->
