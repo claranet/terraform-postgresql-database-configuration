@@ -91,8 +91,6 @@ module "postgresql_users" {
 
   for_each = toset(module.db_pg_flex.postgresql_flexible_databases_names)
 
-  administrator_login = module.db_pg_flex.postgresql_flexible_administrator_login
-
   user     = each.key
   database = each.key
 }
@@ -104,6 +102,9 @@ module "postgresql_hardening" {
 
   for_each = toset(module.db_pg_flex.postgresql_flexible_databases_names)
 
-  user     = each.key
-  database = each.key
+  administrator_login = module.db_pg_flex.postgresql_flexible_administrator_login
+
+  user        = module.postgresql_users[each.key].user
+  database    = each.key
+  schema_name = each.key
 }

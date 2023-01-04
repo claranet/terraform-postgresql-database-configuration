@@ -119,8 +119,6 @@ module "postgresql_users" {
 
   for_each = toset(module.db_pg_flex.postgresql_flexible_databases_names)
 
-  administrator_login = module.db_pg_flex.postgresql_flexible_administrator_login
-
   user     = each.key
   database = each.key
 }
@@ -132,8 +130,11 @@ module "postgresql_hardening" {
 
   for_each = toset(module.db_pg_flex.postgresql_flexible_databases_names)
 
-  user     = each.key
-  database = each.key
+  administrator_login = module.db_pg_flex.postgresql_flexible_administrator_login
+
+  user        = module.postgresql_users[each.key].user
+  database    = each.key
+  schema_name = each.key
 }
 ```
 
@@ -151,6 +152,9 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [postgresql_default_privileges.user_functions_privileges](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/default_privileges) | resource |
+| [postgresql_default_privileges.user_sequences_privileges](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/default_privileges) | resource |
+| [postgresql_default_privileges.user_tables_privileges](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/default_privileges) | resource |
 | [postgresql_grant.revoke_public](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/grant) | resource |
 | [postgresql_schema.db_schema](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/schema) | resource |
 
@@ -158,13 +162,18 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| administrator\_login | Server administrator user name. | `string` | n/a | yes |
 | database | Database to apply hardening to. | `string` | n/a | yes |
+| functions\_privileges | User functions privileges, execution privileges if not defined. | `list(string)` | `[]` | no |
 | schema\_name | Schema custom name to create associated to the Database. Database name used if not set. | `string` | `null` | no |
+| sequences\_privileges | User sequences privileges, all privileges if not defined. | `list(string)` | `[]` | no |
+| tables\_privileges | User tables privileges, all privileges if not defined. | `list(string)` | `[]` | no |
 | user | Database schema owner user. | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
+| database | Database name |
 | schema | Database schema name |
 <!-- END_TF_DOCS -->

@@ -3,6 +3,11 @@ variable "user" {
   description = "Database schema owner user."
 }
 
+variable "administrator_login" {
+  type        = string
+  description = "Server administrator user name."
+}
+
 variable "database" {
   type        = string
   description = "Database to apply hardening to."
@@ -12,4 +17,22 @@ variable "schema_name" {
   type        = string
   description = "Schema custom name to create associated to the Database. Database name used if not set."
   default     = null
+}
+
+variable "tables_privileges" {
+  description = "User tables privileges, all privileges if not defined."
+  type        = list(string)
+  default     = []
+}
+
+variable "sequences_privileges" {
+  description = "User sequences privileges, all privileges if not defined."
+  type        = list(string)
+  default     = []
+}
+
+variable "functions_privileges" {
+  description = "User functions privileges, execution privileges if not defined."
+  type        = list(string)
+  default     = []
 }
