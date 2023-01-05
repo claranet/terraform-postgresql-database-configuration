@@ -1,4 +1,4 @@
-variable "user" {
+variable "owner" {
   type        = string
   description = "Database schema owner user."
 }

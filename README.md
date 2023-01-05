@@ -1,7 +1,7 @@
 # PostgreSQL hardening module
 [![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/hardening/postgresql/)
 
-Terraform module using `PostgreSQL` provider tp apply hardening on an existing database.
+Terraform module using `PostgreSQL` provider to apply hardening on an existing database.
 This module will be used in combination with others PostgreSQL modules (like [`azure-db-postgresql-flexible`](https://registry.terraform.io/modules/claranet/db-postgresql-flexible/azurerm/) for example).
 
 This module revoke privileges on the default `public` PostgreSQL schema and creates a dedicated schema for the specified database.
@@ -43,18 +43,6 @@ module "rg" {
   stack       = var.stack
 }
 
-module "logs" {
-  source  = "claranet/run-common/azurerm//modules/logs"
-  version = "x.x.x"
-
-  client_name         = var.client_name
-  environment         = var.environment
-  stack               = var.stack
-  location            = module.azure_region.location
-  location_short      = module.azure_region.location_short
-  resource_group_name = module.rg.resource_group_name
-}
-
 module "db_pg_flex" {
   source  = "claranet/db-postgresql-flexible/azurerm"
   version = "x.x.x"
@@ -67,40 +55,16 @@ module "db_pg_flex" {
 
   resource_group_name = module.rg.resource_group_name
 
-  tier               = "GeneralPurpose"
-  size               = "D2s_v3"
-  storage_mb         = 32768
-  postgresql_version = 13
-
-  allowed_cidrs = {
-    "1" = "1.2.3.4/29"
-    "2" = "12.34.56.78/32"
-  }
-
-  backup_retention_days        = 14
-  geo_redundant_backup_enabled = true
-
   administrator_login    = var.administrator_login
   administrator_password = var.administrator_password
+
+  allowed_cidrs = {}
 
   databases_names     = ["mydatabase"]
   databases_collation = { mydatabase = "en_US.UTF8" }
   databases_charset   = { mydatabase = "UTF8" }
 
-  maintenance_window = {
-    day_of_week  = 3
-    start_hour   = 3
-    start_minute = 0
-  }
-
-  logs_destinations_ids = [
-    module.logs.logs_storage_account_id,
-    module.logs.log_analytics_workspace_id
-  ]
-
-  extra_tags = {
-    foo = "bar"
-  }
+  logs_destinations_ids = []
 }
 
 provider "postgresql" {
@@ -119,7 +83,6 @@ module "postgresql_users" {
 
   for_each = toset(module.db_pg_flex.postgresql_flexible_databases_names)
 
-  user     = each.key
   database = each.key
 }
 
@@ -132,7 +95,7 @@ module "postgresql_hardening" {
 
   administrator_login = module.db_pg_flex.postgresql_flexible_administrator_login
 
-  user        = module.postgresql_users[each.key].user
+  owner       = module.postgresql_users[each.key].user
   database    = each.key
   schema_name = each.key
 }
@@ -165,10 +128,10 @@ No modules.
 | administrator\_login | Server administrator user name. | `string` | n/a | yes |
 | database | Database to apply hardening to. | `string` | n/a | yes |
 | functions\_privileges | User functions privileges, execution privileges if not defined. | `list(string)` | `[]` | no |
+| owner | Database schema owner user. | `string` | n/a | yes |
 | schema\_name | Schema custom name to create associated to the Database. Database name used if not set. | `string` | `null` | no |
 | sequences\_privileges | User sequences privileges, all privileges if not defined. | `list(string)` | `[]` | no |
 | tables\_privileges | User tables privileges, all privileges if not defined. | `list(string)` | `[]` | no |
-| user | Database schema owner user. | `string` | n/a | yes |
 
 ## Outputs
 

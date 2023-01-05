@@ -9,11 +9,11 @@ resource "postgresql_grant" "revoke_public" {
 resource "postgresql_schema" "db_schema" {
   name     = coalesce(var.schema_name, var.database)
   database = var.database
-  owner    = var.user
+  owner    = var.owner
 }
 
 resource "postgresql_default_privileges" "user_tables_privileges" {
-  role     = var.user
+  role     = var.owner
   database = var.database
   schema   = postgresql_schema.db_schema.name
 
@@ -31,7 +31,7 @@ resource "postgresql_default_privileges" "user_tables_privileges" {
 }
 
 resource "postgresql_default_privileges" "user_sequences_privileges" {
-  role     = var.user
+  role     = var.owner
   database = var.database
   schema   = postgresql_schema.db_schema.name
 
@@ -45,7 +45,7 @@ resource "postgresql_default_privileges" "user_sequences_privileges" {
 }
 
 resource "postgresql_default_privileges" "user_functions_privileges" {
-  role     = var.user
+  role     = var.owner
   database = var.database
   schema   = postgresql_schema.db_schema.name
 
