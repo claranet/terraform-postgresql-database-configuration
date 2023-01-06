@@ -1,6 +1,6 @@
-variable "owner" {
+variable "database_admin_user" {
   type        = string
-  description = "Database schema owner user."
+  description = "Database schema admin user."
 }
 
 variable "administrator_login" {
@@ -22,17 +22,17 @@ variable "schema_name" {
 variable "tables_privileges" {
   description = "User tables privileges, all privileges if not defined."
   type        = list(string)
-  default     = []
+  default     = null
 }
 
 variable "sequences_privileges" {
   description = "User sequences privileges, all privileges if not defined."
   type        = list(string)
-  default     = []
+  default     = null
 }
 
 variable "functions_privileges" {
   description = "User functions privileges, execution privileges if not defined."
   type        = list(string)
-  default     = []
+  default     = null
 }

@@ -58,16 +58,16 @@ module "postgresql_users" {
   database = each.key
 }
 
-module "postgresql_hardening" {
-  # source  = "claranet/hardening/postgresql"
+module "postgresql_configuration" {
+  # source  = "claranet/database-configuration/postgresql"
   # version = "x.x.x"
-  source = "git::ssh://git@git.fr.clara.net/claranet/projects/cloud/azure/terraform/postgresql-hardening.git?ref=AZ-930_postgresql_hard"
+  source = "git::ssh://git@git.fr.clara.net/claranet/projects/cloud/azure/terraform/postgresql-database-configuration.git?ref=AZ-930_postgresql_hard"
 
   for_each = toset(module.db_pg_flex.postgresql_flexible_databases_names)
 
   administrator_login = module.db_pg_flex.postgresql_flexible_administrator_login
 
-  owner       = module.postgresql_users[each.key].user
-  database    = each.key
-  schema_name = each.key
+  database_admin_user = module.postgresql_users[each.key].user
+  database            = each.key
+  schema_name         = each.key
 }
