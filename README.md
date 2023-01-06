@@ -1,8 +1,8 @@
-# PostgreSQL hardening module
-[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/hardening/postgresql/)
+# PostgreSQL database configuration
+[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/database-configuration/postgresql/)
 
-Terraform module using `PostgreSQL` provider to apply hardening on an existing database.
-This module will be used in combination with others PostgreSQL modules (like [`azure-db-postgresql-flexible`](https://registry.terraform.io/modules/claranet/db-postgresql-flexible/azurerm/) for example).
+Terraform module using `PostgreSQL` provider to help configuring an existing database.
+This module will be used combined with others PostgreSQL modules (like [`azure-db-postgresql-flexible`](https://registry.terraform.io/modules/claranet/db-postgresql-flexible/azurerm/) or [`postgresql-users`](https://registry.terraform.io/modules/claranet/users/postgresql/) for example).
 
 This module revoke privileges on the default `public` PostgreSQL schema and creates a dedicated schema for the specified database.
 
