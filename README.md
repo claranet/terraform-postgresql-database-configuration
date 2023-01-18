@@ -4,7 +4,7 @@
 Terraform module using `PostgreSQL` provider to help configuring an existing database.
 This module will be used combined with others PostgreSQL modules (like [`azure-db-postgresql-flexible`](https://registry.terraform.io/modules/claranet/db-postgresql-flexible/azurerm/) or [`postgresql-users`](https://registry.terraform.io/modules/claranet/users/postgresql/) for example).
 
-This module revoke privileges on the default `public` PostgreSQL schema and creates a dedicated schema for the specified database.
+This module revoke privileges on the default `public` PostgreSQL schema regarding the [CVE-2018-1058](https://wiki.postgresql.org/wiki/A_Guide_to_CVE-2018-1058%3A_Protect_Your_Search_Path#Do_not_allow_users_to_create_new_objects_in_the_public_schema) and creates a dedicated schema for the specified database.
 
 <!-- BEGIN_TF_DOCS -->
 ## Global versioning rule for Claranet Azure modules
@@ -82,6 +82,8 @@ module "postgresql_users" {
   source = "git::ssh://git@git.fr.clara.net/claranet/projects/cloud/azure/terraform/postgresql-users.git?ref=AZ-930_postgresql_users_module"
 
   for_each = toset(module.db_pg_flex.postgresql_flexible_databases_names)
+
+  administrator_login = module.db_pg_flex.postgresql_flexible_administrator_login
 
   database = each.key
 }

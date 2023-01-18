@@ -24,6 +24,6 @@ variable "administrator_login" {
 }
 
 variable "administrator_password" {
-  description = "Administrator password for MariaDB server"
+  description = "Administrator password for PostgreSQL server"
   type        = string
 }

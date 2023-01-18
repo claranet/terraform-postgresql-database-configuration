@@ -18,7 +18,7 @@ resource "postgresql_default_privileges" "user_tables_privileges" {
   schema   = postgresql_schema.db_schema.name
 
   object_type = "table"
-  owner       = var.administrator_login
+  owner       = var.database_admin_user
   privileges = var.tables_privileges != null ? var.tables_privileges : [
     "SELECT",
     "INSERT",
