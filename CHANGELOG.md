@@ -1,5 +1,5 @@
-# Unreleased
+# v6.0.0 - 2023-01-20
 
 Added
   * AZ-930: First release of this module
-  * AZ-930: Initial PostgreSQL hardening dedicated sub-module
+  * AZ-930: Initial PostgreSQL database hardening/configuration dedicated sub-module
